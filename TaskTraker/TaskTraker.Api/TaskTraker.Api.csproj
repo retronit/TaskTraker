@@ -21,10 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\TaskTraker.Data\TaskTraker.Data.csproj" />
     <ProjectReference Include="..\TaskTraker.Services\TaskTraker.Services.csproj" />
   </ItemGroup>
