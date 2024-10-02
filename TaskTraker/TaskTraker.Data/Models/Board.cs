@@ -1,0 +1,16 @@
+﻿namespace TaskApp.Data.Models
+{
+    public class Board
+    {
+        public int Id { get; set; }
+
+        public string? Name { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        public ICollection<TaskItem>? Tasks { get; set; }
+
+        public string OwnerId { get; set; }
+        public User Owner { get; set; }
+    }
+}
