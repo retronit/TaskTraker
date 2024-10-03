@@ -5,7 +5,6 @@ using TaskApp.Services.Interfaces;
 
 namespace TaskApp.Api.Controllers
 {
-    [Authorize]
     [Route("api/task-items")]
     [ApiController]
     public class TaskItemsController(ITaskItemService service) : ControllerBase
