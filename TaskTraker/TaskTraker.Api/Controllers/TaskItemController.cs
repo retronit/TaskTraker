@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TaskApp.Data.Models;
-using TaskApp.Services.Interfaces;
+using TaskTraker.Data.Models;
+using TaskTraker.Services.Interfaces;
 
-namespace TaskApp.Api.Controllers
+namespace TaskTraker.Api.Controllers
 {
     [Route("api/task-items")]
     [ApiController]
