@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TaskApp.Data.Context;
-using TaskApp.Data.Models;
-using TaskApp.Services.Interfaces;
+using TaskTraker.Data.Context;
+using TaskTraker.Data.Models;
+using TaskTraker.Services.Interfaces;
 
-namespace TaskApp.Services.Services
+namespace TaskTraker.Services.Services
 {
     public class TaskItemService(TaskTrakerDbContext context) : ITaskItemService
     {

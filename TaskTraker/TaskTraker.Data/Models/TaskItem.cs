@@ -1,4 +1,4 @@
-﻿namespace TaskApp.Data.Models
+﻿namespace TaskTraker.Data.Models
 {
     public class TaskItem
     {
@@ -14,12 +14,12 @@
 
         public int StatusId { get; set; }
 
-        public int AssigneeId { get; set; }
+        public int? AssigneeId { get; set; }
 
         public Board Board { get; set; }
 
         public Status Status { get; set; }
 
-        public User Assignee { get; set; }
+        public User? Assignee { get; set; }
     }
 }

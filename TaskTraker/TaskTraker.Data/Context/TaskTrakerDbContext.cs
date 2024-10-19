@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TaskApp.Data.Models;
+using TaskTraker.Data.Models;
 
-namespace TaskApp.Data.Context
+namespace TaskTraker.Data.Context
 {
     public class TaskTrakerDbContext(DbContextOptions<TaskTrakerDbContext> options) : DbContext(options)
     {
@@ -12,6 +12,8 @@ namespace TaskApp.Data.Context
         public DbSet<Board> Boards { get; set; }
 
         public DbSet<Status> Statuses { get; set; }
+
+        public DbSet<StatusTransition> StatusTransitions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,6 +29,9 @@ namespace TaskApp.Data.Context
                 .HasKey(t => t.Id);
 
             modelBuilder.Entity<Status>()
+                .HasKey(t => t.Id);
+
+            modelBuilder.Entity<StatusTransition>()
                 .HasKey(t => t.Id);
         }
     }
