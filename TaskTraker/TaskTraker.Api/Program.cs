@@ -19,6 +19,8 @@ builder.Services.AddDbContext<TaskTrakerDbContext>(options =>
     options.UseMySQL(connection)
 );
 
+
+builder.Services.AddScoped<IBoardService, BoardService>();
 builder.Services.AddScoped<ITaskItemService, TaskItemService>();
 builder.Services.AddScoped<ICurrentUserServiceMock, CurrentUserServiceMock>();
 
