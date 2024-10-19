@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using TaskApp.Data.Context;
 using TaskApp.Services.Interfaces;
 using TaskApp.Services.Services;
+using TaskTraker.Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,8 @@ builder.Services.AddDbContext<TaskTrakerDbContext>(options =>
     options.UseMySQL(connection)
 );
 
+builder.Services.AddScoped<ITaskItemService, TaskItemService>();
+builder.Services.AddScoped<IBoardService, BoardService>();
 builder.Services.AddScoped<ITaskItemService, TaskItemService>();
 
 var app = builder.Build();
