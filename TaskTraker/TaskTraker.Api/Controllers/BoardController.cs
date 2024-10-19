@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TaskApp.Data.Models;
+using TaskTraker.Data.Models;
 
-using TaskApp.Services.Interfaces;
+using TaskTraker.Services.Interfaces;
 
-namespace TaskApp.Api.Controllers
+namespace TaskTraker.Api.Controllers
 {
     [ApiController]
     [Route("api/board")]

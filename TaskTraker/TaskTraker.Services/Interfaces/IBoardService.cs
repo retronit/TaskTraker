@@ -1,7 +1,6 @@
-﻿
-using TaskApp.Data.Models;
+﻿using TaskTraker.Data.Models;
 
-namespace TaskApp.Services.Interfaces
+namespace TaskTraker.Services.Interfaces
 {
     public interface IBoardService
     {

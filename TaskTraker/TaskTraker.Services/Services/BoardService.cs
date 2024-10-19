@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TaskApp.Data.Context;
-using TaskApp.Data.Models;
-using TaskApp.Services.Interfaces;
+using TaskTraker.Data.Context;
+using TaskTraker.Data.Models;
+using TaskTraker.Services.Interfaces;
 
 namespace TaskTraker.Services.Services
 {
