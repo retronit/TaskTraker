@@ -1,4 +1,4 @@
-﻿namespace TaskApp.Data.Models
+﻿namespace TaskTraker.Data.Models
 {
     public class Board
     {

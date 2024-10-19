@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskTraker.Data.Context;
 
@@ -10,9 +11,11 @@ using TaskTraker.Data.Context;
 namespace TaskTraker.Data.Migrations
 {
     [DbContext(typeof(TaskTrakerDbContext))]
-    partial class TaskTrakerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241015202708_StatusChange")]
+    partial class StatusChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
