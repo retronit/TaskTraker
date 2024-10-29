@@ -2,7 +2,7 @@
 
 namespace TaskTraker.Services.Dtos
 {
-    public record GetBoardDto(string? Name, DateTime CreatedAt, int UserId);
+    public record GetBoardDto(string? Name, DateTime CreatedAt, ICollection<User> Collaborators);
 
     public static class GetBoardDtoExtensions
     {
@@ -10,14 +10,14 @@ namespace TaskTraker.Services.Dtos
          (
              Name: board.Name,
              CreatedAt: board.CreatedAt,
-             UserId: board.OwnerId
+             Collaborators: board.Collaborators
          );
 
         public static void FromGetDtoToBoard(this GetBoardDto boardDto, Board board)
         {
             board.Name = boardDto.Name;
             board.CreatedAt = boardDto.CreatedAt;
-            board.OwnerId = boardDto.UserId;
+            board.Collaborators = boardDto.Collaborators;
         }
     }
 }

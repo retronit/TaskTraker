@@ -12,12 +12,11 @@ namespace TaskTraker.Services.Dtos
              Name: board.Name
          );
 
-        public static Board FromCreateDtoToBoard(this CreateBoardDto boardDto, ICurrentUserServiceMock userServiceMock)
+        public static Board FromCreateDtoToBoard(this CreateBoardDto boardDto)
         {
             return new Board
             {
-                Name = boardDto.Name,
-                OwnerId = userServiceMock.UserId
+                Name = boardDto.Name
             };
         }
     }

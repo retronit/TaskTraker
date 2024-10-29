@@ -14,7 +14,7 @@
 
         public int StatusId { get; set; }
 
-        public int? AssigneeId { get; set; }
+        public string? AssigneeId { get; set; }
 
         public Board Board { get; set; }
 

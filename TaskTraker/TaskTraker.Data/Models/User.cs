@@ -1,13 +1,11 @@
-﻿namespace TaskTraker.Data.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace TaskTraker.Data.Models
 {
-    public class User
+    public class User : IdentityUser
     {
-        public int Id { get; set; }
+        public ICollection<TaskItem>? Tasks { get; set; }
 
-        public string? Name { get; set; }
-
-        public ICollection<TaskItem> Tasks { get; set; }
-
-        public ICollection<Board> Boards { get; set; }
+        public ICollection<Board>? Boards { get; set; }
     }
 }

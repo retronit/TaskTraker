@@ -2,49 +2,51 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskTraker.Data.Models;
-
+using TaskTraker.Services.Dtos;
 using TaskTraker.Services.Interfaces;
 
 namespace TaskTraker.Api.Controllers
 {
-    [ApiController]
+    [Authorize]
     [Route("api/board")]
-    public class BoardsController : ControllerBase
+    [ApiController]
+    public class BoardController(IBoardService service) : ControllerBase
     {
-        private readonly IBoardService _boardService;
+        private readonly IBoardService _service = service;
 
-        public BoardsController(IBoardService boardService)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Board>>> GetAllAsync()
         {
-            _boardService = boardService;
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateBoard(Board board)
-        {
-           
-            var createdBoard = await _boardService.CreateBoardAsync(board);
-            return CreatedAtAction(nameof(GetBoardById), new { id = createdBoard.Id }, createdBoard);
-            
-     
+            var boards = await _service.GetAllAsync();
+            return Ok(boards);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetBoardById(int id)
+        public async Task<ActionResult<Board>> GetAsync(int id)
         {
-           
-           var board = await _boardService.GetBoardByIdAsync(id);
-           return Ok(board);
-        
-       
+            var board = await _service.GetAsync(id);
+            return Ok(board);
         }
 
-
-
-        [HttpGet]
-        public async Task<IActionResult> GetAllBoards()
+        [HttpPost]
+        public async Task<ActionResult> CreateAsync(CreateBoardDto boardDto)
         {
-            var boards = await _boardService.GetAllBoardsAsync();
-            return Ok(boards);
+            await _service.CreateAsync(boardDto);
+            return Ok();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateNameAsync(UpdateBoardDto boardDto)
+        {
+            await _service.UpdateNameAsync(boardDto);
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteAsync(int id)
+        {
+            await _service.DeleteAsync(id);
+            return Ok();
         }
     }
 }

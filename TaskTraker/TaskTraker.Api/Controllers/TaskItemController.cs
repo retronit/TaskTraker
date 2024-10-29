@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskTraker.Data.Models;
+using TaskTraker.Services.Dtos;
 using TaskTraker.Services.Interfaces;
 
 namespace TaskTraker.Api.Controllers
 {
+    [Authorize]
     [Route("api/task-items")]
     [ApiController]
     public class TaskItemsController(ITaskItemService service) : ControllerBase
@@ -26,16 +28,16 @@ namespace TaskTraker.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateAsync(TaskItem taskItem)
+        public async Task<ActionResult> CreateAsync(CreateTaskItemDto taskItemDto)
         {
-            await _service.CreateAsync(taskItem);
+            await _service.CreateAsync(taskItemDto);
             return Ok();
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateAsync(int id, TaskItem taskItem)
+        public async Task<ActionResult> UpdateAsync(UpdateTaskItemDto taskItemDto)
         {
-            await _service.UpdateAsync(id, taskItem);
+            await _service.UpdateAsync(taskItemDto);
             return Ok();
         }
 
