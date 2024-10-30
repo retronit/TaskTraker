@@ -1,16 +1,17 @@
 ﻿using TaskTraker.Data.Models;
+using TaskTraker.Services.Dtos;
 
 namespace TaskTraker.Services.Interfaces
 {
     public interface ITaskItemService
     {
-        Task<IEnumerable<TaskItem>> GetAllAsync();
+        Task<IEnumerable<GetTaskItemDto>> GetAllAsync();
 
-        Task<TaskItem> GetAsync(int id);
+        Task<GetTaskItemDto> GetAsync(int id);
 
-        Task CreateAsync(TaskItem taskItem);
+        Task CreateAsync(CreateTaskItemDto itemDto);
 
-        Task UpdateAsync(int id, TaskItem taskItem);
+        Task UpdateAsync(UpdateTaskItemDto itemDto);
 
         Task DeleteAsync(int id);
     }

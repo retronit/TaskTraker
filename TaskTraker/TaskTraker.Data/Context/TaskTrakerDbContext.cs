@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TaskTraker.Data.Models;
 
 namespace TaskTraker.Data.Context
 {
-    public class TaskTrakerDbContext(DbContextOptions<TaskTrakerDbContext> options) : DbContext(options)
-    {
-        public DbSet<User> Users { get; set; }
+    public class TaskTrakerDbContext(DbContextOptions<TaskTrakerDbContext> options) : IdentityDbContext<User>(options)
+    { 
 
         public DbSet<TaskItem> Tasks { get; set; }
 

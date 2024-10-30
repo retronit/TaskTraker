@@ -2,7 +2,7 @@
 
 namespace TaskTraker.Services.Dtos
 {
-    public record GetTaskItemDto(string? Title, string? Description, DateTime CreatedAt, int BoardId, int StatusId, int? AssigneeId)
+    public record GetTaskItemDto(string? Title, string? Description, DateTime CreatedAt, int BoardId, int StatusId, string? AssigneeId)
     {
     };
 

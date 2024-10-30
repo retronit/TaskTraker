@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskTraker.Data.Context;
 
@@ -10,29 +11,16 @@ using TaskTraker.Data.Context;
 namespace TaskTraker.Data.Migrations
 {
     [DbContext(typeof(TaskTrakerDbContext))]
-    partial class TaskTrakerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241029155950_UpdateUserId")]
+    partial class UpdateUserId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("BoardUser", b =>
-                {
-                    b.Property<int>("BoardsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CollaboratorsId")
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("BoardsId", "CollaboratorsId");
-
-                    b.HasIndex("CollaboratorsId");
-
-                    b.ToTable("BoardUser");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -174,7 +162,13 @@ namespace TaskTraker.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Boards");
                 });
@@ -314,21 +308,6 @@ namespace TaskTraker.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("BoardUser", b =>
-                {
-                    b.HasOne("TaskTraker.Data.Models.Board", null)
-                        .WithMany()
-                        .HasForeignKey("BoardsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TaskTraker.Data.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("CollaboratorsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -378,6 +357,17 @@ namespace TaskTraker.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("TaskTraker.Data.Models.Board", b =>
+                {
+                    b.HasOne("TaskTraker.Data.Models.User", "Owner")
+                        .WithMany("Boards")
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("TaskTraker.Data.Models.StatusTransition", b =>
@@ -436,6 +426,8 @@ namespace TaskTraker.Data.Migrations
 
             modelBuilder.Entity("TaskTraker.Data.Models.User", b =>
                 {
+                    b.Navigation("Boards");
+
                     b.Navigation("Tasks");
                 });
 #pragma warning restore 612, 618
