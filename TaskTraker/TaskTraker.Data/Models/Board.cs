@@ -10,6 +10,6 @@
 
         public ICollection<TaskItem>? Tasks { get; set; }
 
-        public ICollection<User> Collaborators { get; set; }
+        public ICollection<User> Collaborators { get; set; } = [];
     }
 }

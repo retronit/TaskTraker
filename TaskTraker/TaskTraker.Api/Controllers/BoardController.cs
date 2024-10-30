@@ -21,17 +21,31 @@ namespace TaskTraker.Api.Controllers
             return Ok(boards);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Board>> GetAsync(int id)
+        [HttpGet("{boardId}")]
+        public async Task<ActionResult<Board>> GetAsync(int boardId)
         {
-            var board = await _service.GetAsync(id);
+            var board = await _service.GetAsync(boardId);
             return Ok(board);
+        }
+
+        [HttpGet("{boardId}/collaborators")]
+        public async Task<ActionResult<IEnumerable<GetUserDto>>> GetAllCollaboratorsAsync(int boardId)
+        {
+            var collaborators = await _service.GetAllCollaboratorsAsync(boardId);
+            return Ok(collaborators);
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateAsync(CreateBoardDto boardDto)
         {
             await _service.CreateAsync(boardDto);
+            return Ok();
+        }
+
+        [HttpPost("{boardId}/collaborators")]
+        public async Task<IActionResult> AddCollaboratorsAsync(int boardId, [FromBody] List<string> userIds)
+        {
+            await _service.AddCollaboratorsAsync(boardId, userIds);
             return Ok();
         }
 
@@ -42,10 +56,17 @@ namespace TaskTraker.Api.Controllers
             return Ok();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteAsync(int id)
+        [HttpDelete("{boardId}")]
+        public async Task<ActionResult> DeleteAsync(int boardId)
         {
-            await _service.DeleteAsync(id);
+            await _service.DeleteAsync(boardId);
+            return Ok();
+        }
+
+        [HttpDelete("{boardId}/collaborators")]
+        public async Task<ActionResult> DeleteAsync(int boardId, [FromBody] List<string> userIds)
+        {
+            await _service.RemoveCollaboratorsAsync(boardId, userIds);
             return Ok();
         }
     }

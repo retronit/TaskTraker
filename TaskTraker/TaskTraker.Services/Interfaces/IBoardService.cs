@@ -9,12 +9,16 @@ namespace TaskTraker.Services.Interfaces
 
         Task<GetBoardDto> GetAsync(int id);
 
-        Task<IEnumerable<User>> GetAllCollaboratorsAsync(int id);
-
         Task CreateAsync(CreateBoardDto board);
 
         Task UpdateNameAsync(UpdateBoardDto boardDto);
 
         Task DeleteAsync(int id);
+
+        Task<IEnumerable<GetUserDto>> GetAllCollaboratorsAsync(int id);
+
+        Task AddCollaboratorsAsync(int boardId, List<string> userIds);
+
+        Task RemoveCollaboratorsAsync(int boardId, List<string> userIds);
     }
 }

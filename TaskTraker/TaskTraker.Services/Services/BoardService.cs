@@ -15,6 +15,7 @@ namespace TaskTraker.Services.Services
         public async Task<IEnumerable<GetBoardDto>> GetAllAsync()
         {
             var boards = await _context.Boards
+                .Include(b => b.Collaborators)
                 .Where(x => x.Collaborators.Any(user => user.Id == _currentUserService.UserId))
                 .ToListAsync();
 
@@ -25,9 +26,11 @@ namespace TaskTraker.Services.Services
 
         public async Task<GetBoardDto> GetAsync(int id)
         {
-            var board = await _context.Boards.FindAsync(id) ?? throw new BoardNotFoundException();
+            var board = await _context.Boards
+                .Include(b => b.Collaborators)
+                .FirstOrDefaultAsync(b => b.Id == id) ?? throw new BoardNotFoundException();
 
-            if (board.Collaborators.Any(user => user.Id == _currentUserService.UserId))
+            if (!board.Collaborators.Any(user => user.Id == _currentUserService.UserId))
             {
                 throw new BoardHasDifferentOwnerException();
             }
@@ -50,9 +53,11 @@ namespace TaskTraker.Services.Services
 
         public async Task DeleteAsync(int id)
         {
-            var board = await _context.Boards.FindAsync(id) ?? throw new BoardNotFoundException();
+            var board = await _context.Boards
+                .Include(b => b.Collaborators)
+                .FirstOrDefaultAsync(b => b.Id == id) ?? throw new BoardNotFoundException();
 
-            if (board.Collaborators.Any(user => user.Id == _currentUserService.UserId))
+            if (!board.Collaborators.Any(user => user.Id == _currentUserService.UserId))
             {
                 throw new BoardHasDifferentOwnerException();
             }
@@ -64,9 +69,11 @@ namespace TaskTraker.Services.Services
 
         public async Task UpdateNameAsync(UpdateBoardDto boardDto)
         {
-            var existingBoard = await _context.Boards.FindAsync(boardDto.Id) ?? throw new BoardNotFoundException();
+            var existingBoard = await _context.Boards
+                .Include(b => b.Collaborators)
+                .FirstOrDefaultAsync(b => b.Id == boardDto.Id) ?? throw new BoardNotFoundException();
 
-            if (existingBoard.Collaborators.Any(user => user.Id == _currentUserService.UserId))
+            if (!existingBoard.Collaborators.Any(user => user.Id == _currentUserService.UserId))
             {
                 throw new BoardHasDifferentOwnerException();
             }
@@ -76,7 +83,7 @@ namespace TaskTraker.Services.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<User>> GetAllCollaboratorsAsync(int id)
+        public async Task<IEnumerable<GetUserDto>> GetAllCollaboratorsAsync(int id)
         {
             var board = await _context.Boards
                 .Include(b => b.Collaborators)
@@ -84,7 +91,9 @@ namespace TaskTraker.Services.Services
 
             var collaborators = board.Collaborators.ToList();
 
-            return collaborators;
+            var collaboratorDtos = collaborators.Select(x => x.FromUserToGetDto()).ToList();
+
+            return collaboratorDtos;
         }
 
         public async Task AddCollaboratorsAsync(int boardId, List<string> userIds)
