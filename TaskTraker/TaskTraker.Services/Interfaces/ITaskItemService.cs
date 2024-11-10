@@ -5,9 +5,11 @@ namespace TaskTraker.Services.Interfaces
 {
     public interface ITaskItemService
     {
-        Task<IEnumerable<GetTaskItemDto>> GetAllAsync();
+        Task<IEnumerable<GetTaskItemDto>> GetAllByUserAsync();
 
-        Task<GetTaskItemDto> GetAsync(int id);
+        Task<IEnumerable<GetTaskItemDto>> GetAllByBoardAsync(int boardId);
+
+        Task<GetTaskItemDto> GetAsync(int id, int? boardId = null);
 
         Task CreateAsync(CreateTaskItemDto itemDto);
 
