@@ -112,6 +112,11 @@ namespace TaskTraker.Services.Services
                 throw new BoardHasDifferentOwnerException();
             }
 
+            if (!board.Collaborators.Any(user => user.Id == itemDto.AssigneeId))
+            {
+                throw new BoardHasDifferentOwnerException();
+            }
+
             if (!await ValidateStatusChange(existingTaskItem.StatusId, itemDto.StatusId))
             {
                 throw new InvalidStatusChangeException();
