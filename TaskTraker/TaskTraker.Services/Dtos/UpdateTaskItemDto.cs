@@ -2,7 +2,7 @@
 
 namespace TaskTraker.Services.Dtos
 {
-    public record UpdateTaskItemDto(int Id, string? Title, string? Description, int BoardId, int StatusId, string? AssigneeId);
+    public record UpdateTaskItemDto(int Id, string? Title, string? Description, int StatusId, string? AssigneeId);
 
     public static class UpdateTaskItemDtoExtensions
     {
@@ -11,7 +11,6 @@ namespace TaskTraker.Services.Dtos
              Id: taskItem.Id,
              Title: taskItem.Title,
              Description: taskItem.Description,
-             BoardId: taskItem.BoardId,
              StatusId: taskItem.StatusId,
              AssigneeId: taskItem.AssigneeId
          );
@@ -21,7 +20,6 @@ namespace TaskTraker.Services.Dtos
             taskItem.Id = taskItemDto.Id;
             taskItem.Title = taskItemDto.Title;
             taskItem.Description = taskItemDto.Description;
-            taskItem.BoardId = taskItemDto.BoardId;
             taskItem.StatusId = taskItemDto.StatusId;
             taskItem.AssigneeId = taskItemDto.AssigneeId;
         }

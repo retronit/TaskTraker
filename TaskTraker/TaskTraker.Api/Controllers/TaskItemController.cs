@@ -13,17 +13,24 @@ namespace TaskTraker.Api.Controllers
     {
         private readonly ITaskItemService _service = service;
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<TaskItem>>> GetAllAsync()
+        [HttpGet("user")]
+        public async Task<ActionResult<IEnumerable<TaskItem>>> GetAllByUserAsync()
         {
-            var items = await _service.GetAllAsync();
+            var items = await _service.GetAllByUserAsync();
+            return Ok(items);
+        }
+
+        [HttpGet("board/{boardId}")]
+        public async Task<ActionResult<IEnumerable<TaskItem>>> GetAllByBoardAsync(int boardId)
+        {
+            var items = await _service.GetAllByBoardAsync(boardId);
             return Ok(items);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TaskItem>> GetAsync(int id)
+        public async Task<ActionResult<TaskItem>> GetAsync(int id, [FromQuery] int? boardId = null)
         {
-            var taskItem = await _service.GetAsync(id);
+            var taskItem = await _service.GetAsync(id, boardId);
             return Ok(taskItem);
         }
 
