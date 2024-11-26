@@ -55,7 +55,7 @@ builder.Services.AddIdentityApiEndpoints<User>()
     .AddEntityFrameworkStores<TaskTrakerDbContext>();
 
 builder.Services.AddDbContext<TaskTrakerDbContext>(options =>
-    options.UseMySQL(connection)
+    options.UseNpgsql(connection)
 );
 
 

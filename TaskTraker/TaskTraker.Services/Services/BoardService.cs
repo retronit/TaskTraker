@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskTraker.Data.Context;
-using TaskTraker.Data.Models;
 using TaskTraker.Services.Dtos;
 using TaskTraker.Services.Exceptions;
 using TaskTraker.Services.Interfaces;
