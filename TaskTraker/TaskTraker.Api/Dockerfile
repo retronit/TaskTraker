@@ -6,8 +6,9 @@ WORKDIR /src
 COPY ["TaskTraker/TaskTraker.Api/TaskTraker.Api.csproj", "TaskTraker.Api/"]
 COPY ["TaskTraker/TaskTraker.Data/TaskTraker.Data.csproj", "TaskTraker.Data/"]
 COPY ["TaskTraker/TaskTraker.Services/TaskTraker.Services.csproj", "TaskTraker.Services/"]
+COPY ["TaskTraker/TaskTraker.sln", "./"]  # Add this line
 
-RUN dotnet restore "TaskTraker.Api/TaskTraker.Api.csproj"
+RUN dotnet restore "TaskTraker.sln"
 
 COPY TaskTraker .
 
