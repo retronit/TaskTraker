@@ -11,8 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connection = builder.Configuration["TaskTraker:ConnectionString"];
 
-
-//CORS configuration
+//CORS services
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", policy =>
@@ -20,6 +19,7 @@ builder.Services.AddCors(options =>
         policy.WithOrigins("https://khajiit73.github.io")
               .AllowAnyHeader() 
               .AllowAnyMethod() 
+              .SetIsOriginAllowed(origin => true) 
               .AllowCredentials(); 
     });
 });
@@ -27,7 +27,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Swagger configuration
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -42,29 +42,26 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "Bearer"
     });
 
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-      {
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
         {
-          new OpenApiSecurityScheme
-          {
-            Reference = new OpenApiReference
-              {
-                Type = ReferenceType.SecurityScheme,
-                Id = "Bearer"
-              },
-              Scheme = "oauth2",
-              Name = "Bearer",
-              In = ParameterLocation.Header,
-
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                },
+                Scheme = "oauth2",
+                Name = "Bearer",
+                In = ParameterLocation.Header
             },
             new List<string>()
-          }
-        });
+        }
+    });
 });
 
-builder.Services.AddIdentityApiEndpoints<User>()
-    .AddEntityFrameworkStores<TaskTrakerDbContext>();
-
+// Add other services
 builder.Services.AddDbContext<TaskTrakerDbContext>(options =>
     options.UseNpgsql(connection)
 );
@@ -75,24 +72,22 @@ builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 var app = builder.Build();
 
+// Swagger UI setup
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "TaskTraker API V1");
-    c.RoutePrefix = "swagger"; 
+    c.RoutePrefix = "swagger";
 });
 
+// Middleware
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Use CORS
 app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthentication();
-
 app.UseAuthorization();
 
-app.MapIdentityApi<User>();
-
 app.MapControllers();
-
 app.Run();
