@@ -11,10 +11,22 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connection = builder.Configuration["TaskTraker:ConnectionString"];
 
-// Add services to the container.
+
+//CORS configuration
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", policy =>
+    {
+        policy.WithOrigins("https://khajiit73.github.io")
+              .AllowAnyHeader() 
+              .AllowAnyMethod() 
+              .AllowCredentials(); 
+    });
+});
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -50,14 +62,12 @@ builder.Services.AddSwaggerGen(c =>
         });
 });
 
-builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<User>()
     .AddEntityFrameworkStores<TaskTrakerDbContext>();
 
 builder.Services.AddDbContext<TaskTrakerDbContext>(options =>
     options.UseNpgsql(connection)
 );
-
 
 builder.Services.AddScoped<IBoardService, BoardService>();
 builder.Services.AddScoped<ITaskItemService, TaskItemService>();
@@ -74,7 +84,8 @@ app.UseSwaggerUI(c =>
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-//app.UseHttpsRedirection();
+// Use CORS
+app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthentication();
 
