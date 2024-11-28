@@ -15,6 +15,9 @@ var connection = builder.Configuration["TaskTraker:ConnectionString"];
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
+
+builder.Services.AddHttpContextAccessor();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
