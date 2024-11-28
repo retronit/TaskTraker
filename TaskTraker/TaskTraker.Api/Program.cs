@@ -66,6 +66,10 @@ builder.Services.AddScoped<IBoardService, BoardService>();
 builder.Services.AddScoped<ITaskItemService, TaskItemService>();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
 var app = builder.Build();
 
 app.UseSwagger();
