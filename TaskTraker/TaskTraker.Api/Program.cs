@@ -16,8 +16,6 @@ var connection = builder.Configuration["TaskTraker:ConnectionString"];
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
-builder.Services.AddHttpContextAccessor();
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -61,14 +59,10 @@ builder.Services.AddDbContext<TaskTrakerDbContext>(options =>
     options.UseNpgsql(connection)
 );
 
-
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IBoardService, BoardService>();
 builder.Services.AddScoped<ITaskItemService, TaskItemService>();
-builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
-
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
-builder.Logging.AddDebug();
 
 var app = builder.Build();
 
