@@ -6,7 +6,7 @@
 
         public string? Name { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public ICollection<TaskItem>? Tasks { get; set; }
 
