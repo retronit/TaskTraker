@@ -11,8 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connection = builder.Configuration["TaskTraker:ConnectionString"];
 
-// Add services to the container.
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -26,7 +24,6 @@ builder.Services.AddCors(options =>
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -42,26 +39,24 @@ builder.Services.AddSwaggerGen(c =>
     });
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-      {
+    {
         {
-          new OpenApiSecurityScheme
-          {
-            Reference = new OpenApiReference
-              {
-                Type = ReferenceType.SecurityScheme,
-                Id = "Bearer"
-              },
-              Scheme = "oauth2",
-              Name = "Bearer",
-              In = ParameterLocation.Header,
-
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                },
+                Scheme = "oauth2",
+                Name = "Bearer",
+                In = ParameterLocation.Header,
             },
             new List<string>()
-          }
-        });
+        }
+    });
 });
 
-builder.Services.AddAuthorization();
 builder.Services.AddIdentityApiEndpoints<User>()
     .AddEntityFrameworkStores<TaskTrakerDbContext>();
 
@@ -76,6 +71,21 @@ builder.Services.AddScoped<ITaskItemService, TaskItemService>();
 
 var app = builder.Build();
 
+app.UseCors("AllowAll");
+
+// Middleware to handle preflight OPTIONS requests
+app.Use(async (context, next) =>
+{
+    if (context.Request.Method == "OPTIONS")
+    {
+        context.Response.StatusCode = 200;
+        await context.Response.CompleteAsync();
+        return;
+    }
+
+    await next();
+});
+
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -85,14 +95,10 @@ app.UseSwaggerUI(c =>
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-app.UseCors("AllowAll");
-
 app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapIdentityApi<User>();
-
 app.MapControllers();
 
 app.Run();
