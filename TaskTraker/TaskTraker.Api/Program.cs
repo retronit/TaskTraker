@@ -7,8 +7,6 @@ using TaskTraker.Data.Models;
 using TaskTraker.Services.Interfaces;
 using TaskTraker.Services.Services;
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
 var builder = WebApplication.CreateBuilder(args);
 
 var connection = builder.Configuration["TaskTraker:ConnectionString"];
@@ -17,11 +15,12 @@ var connection = builder.Configuration["TaskTraker:ConnectionString"];
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-                      policy =>
-                      {
-                          policy.AllowAnyOrigin();
-                      });
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
 });
 
 builder.Services.AddAuthorization();
@@ -86,7 +85,7 @@ app.UseSwaggerUI(c =>
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-app.UseCors(MyAllowSpecificOrigins);
+app.UseCors("AllowAll");
 
 app.UseAuthentication();
 
