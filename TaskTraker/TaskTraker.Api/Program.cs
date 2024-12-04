@@ -20,10 +20,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("https://khajiit73.github.io",
-                                              "https://khajiit73.github.io/TaskTrakerPages/")
-                                              .AllowAnyHeader()
-                                              .AllowAnyMethod();
+                            policy.AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
                       });
 });
 
