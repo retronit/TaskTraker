@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TaskTraker.Data.Models;
@@ -7,6 +8,7 @@ using TaskTraker.Services.Interfaces;
 
 namespace TaskTraker.Api.Controllers
 {
+    [EnableCors]
     [Authorize]
     [Route("api/board")]
     [ApiController]
