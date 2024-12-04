@@ -71,10 +71,9 @@ builder.Services.AddScoped<ITaskItemService, TaskItemService>();
 
 var app = builder.Build();
 
-app.UseCors("AllowAll");
 
 // Middleware to handle preflight OPTIONS requests
-app.Use(async (context, next) =>
+/*app.Use(async (context, next) =>
 {
     if (context.Request.Method == "OPTIONS")
     {
@@ -86,13 +85,17 @@ app.Use(async (context, next) =>
         return;
     }
     await next();
-});
+});*/
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "TaskTraker API V1");
     c.RoutePrefix = "swagger";
 });
+
+app.UseRouting();
+
+app.UseCors("AllowAll");
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
