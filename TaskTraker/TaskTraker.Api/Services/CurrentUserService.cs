@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using TaskTraker.Data.Models;
 using TaskTraker.Services.Interfaces;
 
 namespace TaskTraker.Api.Services

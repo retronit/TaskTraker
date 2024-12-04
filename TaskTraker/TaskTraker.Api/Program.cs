@@ -7,11 +7,25 @@ using TaskTraker.Data.Models;
 using TaskTraker.Services.Interfaces;
 using TaskTraker.Services.Services;
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 var builder = WebApplication.CreateBuilder(args);
 
 var connection = builder.Configuration["TaskTraker:ConnectionString"];
 
 // Add services to the container.
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("https://khajiit73.github.io",
+                                              "https://khajiit73.github.io/TaskTrakerPages/")
+                                              .AllowAnyHeader()
+                                              .AllowAnyMethod();
+                      });
+});
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
@@ -70,12 +84,12 @@ app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "TaskTraker API V1");
-    c.RoutePrefix = "swagger"; 
+    c.RoutePrefix = "swagger";
 });
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-//app.UseHttpsRedirection();
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthentication();
 
